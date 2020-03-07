@@ -1,0 +1,34 @@
+__pycache__
+.DS_Store
+.cache
+.eggs
+.pytest_cache
+.tox
+build
+dist
+*.egg-info
+*.pyc
+
+# IDE Specific files
+### Pycharm IDE - Jetbrains
+.idea/*
+.vscode/*
+
+### PyDev IDE - Eclipse
+.metadata
+tmp/
+*.tmp
+*.bak
+local.properties
+.settings/
+.loadpath
+*.project
+*.pydevproject
+
+### YouCompleteMe - VIM plugin
+.ycm_extra_conf.py
+
+##Tests JS
+node_modules/
+
+Pipfile.lock
