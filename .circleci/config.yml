@@ -71,7 +71,7 @@ jobs:
           command: |
             . venv/bin/activate;
             cd example;
-            robot --opentmi localhost:3000 --opentmi_token 123 --metadata foo bar --metadata DUT_SERIAL_NUMBER 123 --metadata DUT_MODEL S5 --metadata DUT_VENDOR samsang example.py
+            robot --nostatusrc -v opentmi:localhost:3000 -v opentmi_token:123 -v foo:bar -v DUT_SERIAL_NUMBER:123 -v DUT_MODEL:S5 -v DUT_VENDOR:samsang example.robot
       - store_artifacts:
           path: htmlcov
           destination: htmlcov
