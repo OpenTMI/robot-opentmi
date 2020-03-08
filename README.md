@@ -4,19 +4,20 @@ This robot-framework listener listen results and upload them to OpenTMI.
 
 ## Usage
 
-```
-robot --listener robot_opentmi.plugin.PythonListener example/example.robot
-```
-
-## Usage
-
 Install using pip:
 
 `pip install robot-opentmi`
 
 Running with robot:
 
-`robot -v...`
+```
+robot --listener robot_opentmi.plugin.PythonListener:<host>:<token>:<port> example/example.robot
+```
+
+Where:
+* `<host>` is OpenTMI uri
+* `<port>` is OpenTMI port
+* `<token>` is OpenTMI access token
 
 
 ### metadata
@@ -27,10 +28,6 @@ Usage:
 `robot -v <KEY>:<VALUE> ...`
 
 **Keys:**
-* OpenTMI
-  * `opentmi`, server address
-  * `opentmi_token`, access token
-
 * Device Under Test:
   * `DUT_SERIAL_NUMBER`
   * `DUT_VERSION`

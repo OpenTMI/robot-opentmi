@@ -21,13 +21,13 @@ class PythonListener:
     """ Listener class """
     ROBOT_LISTENER_API_VERSION = 3
 
-    def __init__(self, host=None, token=None):
+    def __init__(self, host='localhost', token=None, port=None):
         """
         Listener constructor
-        :param host: OpenTMI host uri. If not given read from variable: -v opentmi:<uri>
-        :param token: OpenTMI access token. If not given read from variable: -v opentmi_token:<token>
+        :param host: OpenTMI host uri.
+        :param token: OpenTMI access token.
         """
-        self._host = host
+        self._host = f'{host}:{port}' if port else host
         self._client = None
         self._token = token
         self._results = list()
@@ -41,10 +41,6 @@ class PythonListener:
     def start_suite(self, data, result):
         """ Called when a test suite starts. """
         logger.debug('start_suite')
-        if not self._token:
-            self._token = BuiltIn().get_variable_value('${opentmi_token}') or None
-        if not self._host:
-            self._host = BuiltIn().get_variable_value('${opentmi}') or 'localhost:3000'
         self._variables = BuiltIn().get_variables(no_decoration=True)
 
     def start_test(self, data, result):
@@ -85,9 +81,6 @@ class PythonListener:
         dut = None
         for key in self._variables:
             value = self._variables[key]
-
-            if key == 'opentmi_token':  # do not leak token
-                continue
 
             if ['LOG_FILE', 'OUTPUT_FILE', 'REPORT_FILE'].__contains__(key):
                 file_stats = os.stat(value)

@@ -3,7 +3,6 @@ Documentation     A test suite with a single test for valid login.
 ...
 ...               This test has a workflow that is created using keywords in
 ...               the imported resource file.
-# Library    robot_opentmi.plugin.PythonListener    host    user
 
 *** Test Case ***
 first dummy test
