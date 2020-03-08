@@ -35,7 +35,6 @@ setup(
     python_requires=">=3.6",
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Framework :: robotfrmework",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX",
