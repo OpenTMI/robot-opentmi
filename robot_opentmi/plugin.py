@@ -52,13 +52,15 @@ class PythonListener:
         logger.debug('end_test')
 
         result = Result(tcid=data.longname)
-        result.campaign = data.parent.longname
+        result.campaign = os.environ.get('JOB_NAME', data.parent.longname)
         if _result.message:
             result.execution.note = _result.message
         result.execution.duration = float(_result.elapsedtime)
         result.execution.environment.framework.name = __robot_info__.project_name
         result.execution.environment.framework.version = __robot_info__.version
-        result.job.id = os.environ.get('JOB_NAME', str(uuid.uuid1()))
+        result.execution.sut.commit_id = os.environ.get('GIT_COMMIT', "")
+        result.execution.sut.branch = os.environ.get('GIT_BRANCH ', "")
+        result.job.id = os.environ.get('BUILD_TAG', str(uuid.uuid1()))
         try:
             result.execution.verdict = _result.status.lower()
         except Exception as error:  # pylint: disable=broad-except
@@ -83,6 +85,9 @@ class PythonListener:
             value = self._variables[key]
 
             if ['LOG_FILE', 'OUTPUT_FILE', 'REPORT_FILE'].__contains__(key):
+                if not os.path.exists(value):
+                    logger.debug(f"{key} file {value} not exists")
+                    continue
                 file_stats = os.stat(value)
                 if file_stats.st_size / (1024 * 1024) > 1.0:
                     logger.debug('avoid uploading huge log files')
