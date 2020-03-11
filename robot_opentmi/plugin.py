@@ -55,7 +55,7 @@ class PythonListener:
         """ Called when a test case ends. """
         logger.debug('end_test')
 
-        result = Result(tcid=data.longname)
+        result = Result(tcid=data.name)
         result.campaign = os.environ.get('JOB_NAME', data.parent.longname)
         if _result.message:
             result.execution.note = _result.message
@@ -178,7 +178,6 @@ class PythonListener:
             response = self._client.post_result(result)
             if not response.get('tcRef'):
                 self._create_testcase(result)
-
             self._uploaded_success += 1
         except Exception as error:  # pylint: disable=broad-except
             logger.warn(error)
