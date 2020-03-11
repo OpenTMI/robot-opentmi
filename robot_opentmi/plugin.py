@@ -17,11 +17,12 @@ from opentmi_client.api import Result, File, Dut, Provider
 from . import __robot_info__
 
 
+# pylint: disable=too-many-instance-attributes
 class PythonListener:
     """ Listener class """
     ROBOT_LISTENER_API_VERSION = 3
 
-    def __init__(self, host='localhost', token=None, port=None):
+    def __init__(self, host='localhost', token=None, port=None, store_logs=False):
         """
         Listener constructor
         :param host: OpenTMI host uri.
@@ -33,7 +34,9 @@ class PythonListener:
         self._results = list()
         self._uploaded_success = 0
         self._uploaded_failed = 0
+        self._store_logs = store_logs
         self._variables = None
+        self._metadata = None
 
     # robot hooks
 
@@ -41,6 +44,7 @@ class PythonListener:
     def start_suite(self, data, result):
         """ Called when a test suite starts. """
         logger.debug('start_suite')
+        self._metadata = result.metadata
         self._variables = BuiltIn().get_variables(no_decoration=True)
 
     def start_test(self, data, result):
@@ -80,11 +84,12 @@ class PythonListener:
             profiling['tags'].append(tag)
         result.execution.profiling = profiling
 
-        dut = None
         for key in self._variables:
             value = self._variables[key]
-
             if ['LOG_FILE', 'OUTPUT_FILE', 'REPORT_FILE'].__contains__(key):
+                if not self._store_logs:
+                    logger.debug('Ignore logs')
+                    continue
                 if not os.path.exists(value):
                     logger.debug(f"{key} file {value} not exists")
                     continue
@@ -101,13 +106,21 @@ class PythonListener:
                 file.set_data(data)
                 continue
 
+        dut = None
+        for key in self._metadata:
+            value = self._metadata[key]
+
             # Dut
             if key.startswith('DUT') and not dut:
                 dut = Dut()
-                result.append_dut(dut)
+                dut.type = 'hw'
+                result.execution.append_dut(dut)
+            if key == 'DUT_TYPE':
+                dut.type = value
             if key == 'DUT_SERIAL_NUMBER':
                 dut.serial_number = value
-                dut.type = 'hw'
+            # elif key == 'DUT_PLATFORM':
+            #   dut.platform = value
             elif key == 'DUT_VERSION':
                 dut.ver = value
             elif key == 'DUT_VENDOR':
@@ -125,6 +138,8 @@ class PythonListener:
                 result.execution.sut.append_fut(value)
             elif key == 'SUT_COMMIT_ID':
                 result.execution.sut.commit_id = value
+            elif key == 'SUT_BRANCH':
+                result.execution.sut.branch = value
 
         self._results.append(result)
 

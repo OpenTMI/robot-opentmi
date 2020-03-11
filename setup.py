@@ -18,7 +18,7 @@ setup(
     url="https://github.com/openmtmi/robot-opentmi",
     packages=["robot_opentmi"],
     setup_requires=["setuptools_scm"],
-    install_requires=["robotframework", "opentmi-client>=0.6.0", "joblib"],
+    install_requires=["robotframework", "opentmi-client>=0.6.2", "joblib"],
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:

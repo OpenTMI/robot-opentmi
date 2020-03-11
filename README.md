@@ -16,25 +16,27 @@ Install using pip:
 Running with robot:
 
 ```
-robot --listener robot_opentmi.plugin.PythonListener:<host>:<token>:<port> example/example.robot
+robot --listener robot_opentmi.plugin.PythonListener:<host>:<token>:<port>:<store_logs> example/example.robot
 ```
 
 Where:
-* `<host>` is OpenTMI uri
-* `<port>` is OpenTMI port
-* `<token>` is OpenTMI access token
+* `<host>` is OpenTMI uri (required)
+* `<token>` is OpenTMI access token (required)
+* `<port>` is OpenTMI port (default: 80, optional)
+* `<store_logs>` store logs to OpenTMI (default: False, optional)
 
 
 ### metadata
 
-module utilize some special robot variable arguments.
+module utilize some special robot metadata.
 Usage:
 
-`robot -v <KEY>:<VALUE> ...`
+`robot -M <KEY>:<VALUE> ...`
 
 **Keys:**
 * Device Under Test:
   * `DUT_SERIAL_NUMBER`
+  * `DUT_TYPE`
   * `DUT_VERSION`
   * `DUT_VENDOR`
   * `DUT_MODEL`
@@ -44,3 +46,4 @@ Usage:
   * `SUT_COMPONENT`
   * `SUT_FEATURE`
   * `SUT_COMMIT_ID`
+  * `SUT_BRANCH`
