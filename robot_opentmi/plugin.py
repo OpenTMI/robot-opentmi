@@ -35,8 +35,8 @@ class PythonListener:
         self._uploaded_success = 0
         self._uploaded_failed = 0
         self._store_logs = store_logs
-        self._variables = None
-        self._metadata = None
+        self._variables = dict()
+        self._metadata = dict()
 
     # robot hooks
 
@@ -44,8 +44,11 @@ class PythonListener:
     def start_suite(self, data, result):
         """ Called when a test suite starts. """
         logger.debug('start_suite')
-        self._metadata = result.metadata
-        self._variables = BuiltIn().get_variables(no_decoration=True)
+        if len(result.metadata) > 0 and not self._metadata:
+            self._metadata = result.metadata
+        variables = BuiltIn().get_variables(no_decoration=True)
+        if len(variables) > 0 and not self._variables:
+            self._variables = variables
 
     def start_test(self, data, result):
         """ Called when a test case starts. """
