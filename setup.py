@@ -15,7 +15,7 @@ setup(
     long_description_content_type='text/markdown',
     author="Jussi Vatjus-Anttila",
     author_email="jussiva@gmail.com",
-    url="https://github.com/openmtmi/robot-opentmi",
+    url="https://github.com/opentmi/robot-opentmi",
     packages=["robot_opentmi"],
     setup_requires=["setuptools_scm"],
     install_requires=["robotframework", "opentmi-client>=0.6.2", "joblib"],
