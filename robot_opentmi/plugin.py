@@ -66,7 +66,7 @@ class PythonListener:
         result.execution.environment.framework.name = __robot_info__.project_name
         result.execution.environment.framework.version = __robot_info__.version
         result.execution.sut.commit_id = os.environ.get('GIT_COMMIT', "")
-        result.execution.sut.branch = os.environ.get('GIT_BRANCH ', "")
+        result.execution.sut.branch = os.environ.get('GIT_BRANCH', "")
         result.job.id = os.environ.get('BUILD_TAG', str(uuid.uuid1()))
         try:
             result.execution.verdict = _result.status.lower()
